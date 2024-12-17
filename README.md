@@ -58,12 +58,12 @@ Min correlation: 0.00054
 Threshold used: 0.02
 pixels dropped: 12%
 
-### Accuracy: ???
+### Accuracy: 0.73
 
 Threshold used: 0.04
 pixels dropped: 28%
 
-### Accuracy: ???
+### Accuracy: 0.69
 
 Some more experiments and results...
 
