@@ -45,6 +45,7 @@ Mean: 0.0, Standard Deviation: 1.0
 ![Sample Image 3](Sample_Images\noised3.png)
 
 ### Accuracy: 0.78
+![confusion matrix](Sample_Images\confusion_matrix_noised_first.png)
 
 ### Experiment 3
 
@@ -58,7 +59,7 @@ Min correlation: 0.00054
 Threshold used: 0.02
 pixels dropped: 12%
 
-### Accuracy: 0.73
+### Accuracy: 0.69
 
 Threshold used: 0.04
 pixels dropped: 28%
