@@ -1,0 +1,26 @@
+project-root-directory
+    |
+    |__all ipynb files
+    |
+    |__kaggle
+          |
+          |__input
+          |      |
+          |      |__test
+          |      |__train
+          |
+          |__working
+                |
+                |__data
+                |   |
+                |   |__test,train,val
+                |        |
+                |        |__REAL,FAKE
+                |__data_original
+                |   |
+                |   |__test,train,val
+                |        |
+                |        |__REAL,FAKE
+                |__raw
+                    |
+                    |__FAKE, REAL

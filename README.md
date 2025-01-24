@@ -1,130 +1,121 @@
-<!-- Project title -->
-# Project Title
+# DEEP FAKE IMAGE DETECTOR ROBUST AGAINST ADVERSARIAL ATTACKS
 
-DEEP FAKE IMAGE DETECTOR ROBUST AGAINST ADVERSARIAL AND LATENT CODE MODIFICATION ATTACKS
+This project focuses on improving the robustness of machine learning models in detecting real and fake images, even under adversarial attacks such as noise addition. The aim is to explore countermeasures to reduce performance degradation caused by such attacks.
 
-<!-- experiments -->
-# Experiments
+---
 
-## Dataset : CiFAKE
+## Problem Definition
 
-A dataset containing 60,000 synthetically-generated images and 60,000 real images.
-<!-- link -->
-[Visit CiFAKE Dataset](https://www.kaggle.com/datasets/birdy654/cifake-real-and-ai-generated-synthetic-images)
+Adversarial attacks, such as adding noise to images, can cause models like YOLO and ViT to misclassify real and fake images. Noise can be introduced in various ways, including:
 
-<!-- experiment 1 -->
-### Experiment 1
+- Pixel values
+- Frequency domains
+- Along gradient loss
 
-Task: Train a model on the dataset and evaluate its performance.
+### Countermeasures Explored
 
-## Models
+1. **Modifications to Training Data:**
+   - Feature dropping
+   - Data augmentations (e.g., rotating, zooming, cropping)
+   - Smoothing
+   - Adding random noise
+   - Normalization
 
-### 1. ViT
-<!-- accuracy -->
-Accuracy: 0.98
+2. **Modifications to Model Architectures:**
+   - Dropout layers
+   - Adversarial noise layers
+   - Regularization techniques
 
-### 2. EfficientNet
+---
 
-Accuracy: 0.88
+## Goals
 
-### 3. YOLO-V11
+1. **Baseline Evaluation:** Measure the performance of models without any adversarial noise.
+2. **Adversarial Impact:** Evaluate performance drops after introducing noise to test data.
+3. **Countermeasure Integration:** Incorporate countermeasures (data-level and model-level) and assess their impact on robustness.
+4. **Performance Analysis:** Compare performance improvements post-countermeasure implementation.
 
-(This model was used for further experiments)
+---
 
-Accuracy: 0.92
+## Models and Technologies Used
 
-### Experiment 2
+### **Models:**
 
-Task: added gaussian noise to the Test dataset images and evaluated the YOLO model's performance.
+- **ViT (Vision Transformer):** Used for initial classification tasks.
+- **EfficientNet:** Tested for baseline performance.
+- **YOLO-v11x (Custom Version):** Utilized for both baseline and adversarial robustness experiments.
 
-Mean: 0.0, Standard Deviation: 1.0
-<!-- sample images -->
+### **Technologies and Tools:**
 
-![Sample Image 1](Sample_Images\noised1.png)
-![Sample Image 2](Sample_Images\noised2.png)
-![Sample Image 3](Sample_Images\noised3.png)
+- **PyTorch:** For implementing and customizing machine learning models.
+- **Python Libraries:** NumPy, Matplotlib, and SciPy for data manipulation and visualization.
+- **CiFake Dataset:** A dataset with 60,000 real and 60,000 synthetic images.
 
-### Accuracy: 0.78
-![confusion matrix](Sample_Images\confusion_matrix_noised_first.png)
+---
 
-### Experiment 3
+## Experiments
 
-Task: Making the model robust
+### 1. Black Box Experiments
 
-#### Approach 1: Feature Dropping with least correlations
+#### **Experiment 1: Baseline Model Performance**
 
-Max correlation: 0.2645
-Min correlation: 0.00054
+- Dataset: [CiFake Dataset](https://www.kaggle.com/datasets/birdy654/cifake-real-and-ai-generated-synthetic-images)
+- Results:
 
-Threshold used: 0.02
-pixels dropped: 12%
+  | Model         | Accuracy |
+  |---------------|----------|
+  | ViT           | 98%      |
+  | EfficientNet  | 88%      |
+  | YOLO-v11x     | 92%      |
 
-### Accuracy: 0.69
+#### **Experiment 2: Adding Gaussian Noise**
 
-Threshold used: 0.04
-pixels dropped: 28%
+- Noise Parameters: Mean = 0.0, Standard Deviation = 1.0
+- Results:
+  - Accuracy of YOLO-v11x dropped to **78%**.
 
-### Accuracy: 0.69
+#### **Experiment 3: Countermeasures**
 
-Some more experiments and results...
+1. **Feature Dropping:**
+   - Dropped least correlated features.
+   - Accuracy varied between **68-74%** based on the pixel drop percentage.
+   - **Observation:** Feature dropping alone is ineffective.
 
-stdev: 25.0
-threshold: 0.035
-pixels dropped: 25%
+2. **Resolution Reduction:**
+   - Low-resolution images (32x32) further degraded performance.
+   - **Observation:** Not a viable approach.
 
-### Accuracy: 69%
+3. **Augmentations + Feature Dropping:**
+   - Accuracy improved slightly to **73%** with augmentations and feature dropping.
+   - **Observation:** Limited effectiveness; overfitting could be a concern.
 
-stdev: 25.0
-pixels dropped: 17%
+4. **Augmentations + Adversarial Training:**
+   - 50% of training data included Gaussian noise.
+   - Best Accuracy: **85%**
+   - **Observation:** Combining augmentations with adversarial training significantly improved robustness.
 
-### Accuracy: 74%
+---
 
-stdev: 25.0
-pixels dropped: 12%
+### 2. White Box Experiments
 
-### Accuracy: 0.69 and 0.71 (with and without resolution reduction)
+#### **Model Customizations**
 
-#### Approach 2: Feature Dropping + Augmentations
+- **Custom Dropout Layers:**
+  - Dropout layers were added after convolution layers to reduce overfitting.
+  - Accuracy on noisy data: **73%**
 
-stdev: 25.0
-threshold: 0.02
-pixels dropped: 9%
+- **Adversarial Noise Layers:**
+  - Adversarial noise layers were added before the initial convolution layer.
+  - Accuracy on noisy data: **80%**
 
-First feature dropping, then augmentations
+---
 
-### Accuracy: 0.68
+## Observations
 
-First augmentations, then feature dropping
+1. **Impact of Noise:** Adding Gaussian noise significantly reduces model performance.
+2. **Countermeasure Effectiveness:**
+   - Adversarial training with noisy data improved robustness significantly.
+   - Custom layers (e.g., adversarial noise and dropout) also provided performance boosts.
+3. **Limitations:** Feature dropping and resolution reduction were ineffective due to the low resolution of the CiFake dataset.
 
-stdev: 25.0
-threshold: 0.015
-pixels dropped: 9%
-
-### Accuracy: 0.679
-
-
-stdev: 1.0
-threshold: 0.01
-pixels dropped: 5%
-
-# Accuracy: 0.73 
-
-![confusion matrix](Sample_Images/confusion_matrix.jpg)
-
-#### Approach 3: Feature Dropping + Augmentations + Adversarial Training
-
-50% of the augmentations were done by gaussian noise
-
-stdev: 1.0
-threshold: 0.015
-pixels dropped: 9%
-
-### Accuracy: 0.85
-
-![confusion matrix](Sample_Images/confusion_matrix_adversarial.png)
-
-
-
-
-
-
+---
